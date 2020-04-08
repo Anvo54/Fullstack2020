@@ -28,13 +28,13 @@ useEffect(()=> {
       })
     } else {
       if (window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`))
-        replaceNum(exists, newNumber)
+        replaceNum(exists)
     }
     setNewName('')
     setNewNumber('')
   }
 
-  const replaceNum = (id, number) =>{
+  const replaceNum = (id) =>{
     const updatedPerson = persons.find(p => p.id === id)
     const changePerson = {...updatedPerson, number: newNumber}
     setPersons(persons.map(pers => pers.id === id ? changePerson : pers))
