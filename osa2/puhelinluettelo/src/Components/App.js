@@ -8,13 +8,14 @@ const App = () => {
   const [ filterName, setFilterName ] = useState('') 
 
 useEffect(()=> {
-	personService.getAll().then(initialPersons => {setPersons(initialPersons)})
+  personService.getAll()
+  .then(initialPersons => {setPersons(initialPersons)})
 }, [])
 
   const addName = (event) =>{
     let exists;
     persons.forEach(person => {
-      exists = (person.name === newName) ? 1 : 0;
+      exists = (person.name === newName) ? person.id : 0;
     });
     event.preventDefault()
     if (!exists) {
@@ -26,9 +27,17 @@ useEffect(()=> {
         setPersons(persons.concat(returnedPerson))
       })
     } else {
-        alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`))
+        replaceNum(exists, newNumber)
     }
     setNewName('')
+    setNewNumber('')
+  }
+
+  const replaceNum = (id, number) =>{
+    const updatedPerson = persons.find(p => p.id === id)
+    const changePerson = {...updatedPerson, number: newNumber}
+    setPersons(persons.map(pers => pers.id === id ? changePerson : pers))
   }
 
   const handleNameChange = (event)=>{
@@ -46,6 +55,13 @@ useEffect(()=> {
     setFilterName(event.target.value)
   }
 
+  const deletePerson = (id, name) =>{
+    if  (window.confirm(`Delete ${name}?`)){
+      personService.del(id)
+      setPersons(persons.filter(n => n.id !== id))
+    }
+  }
+
 const namesToShow = !filterName ? persons : persons.filter(person => person.name.match(filterName))
 
   return (
@@ -60,7 +76,7 @@ const namesToShow = !filterName ? persons : persons.filter(person => person.name
         handleNameChange={handleNameChange} 
         handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-        <PersonsToShow person={namesToShow}/>
+        <PersonsToShow person={namesToShow} del={deletePerson}/>
     </div>
   )
 }
@@ -90,9 +106,10 @@ const FilteForm =(props)=>{
   )
 }
 
-const PersonsToShow = ({person}) =>{
+const PersonsToShow = ({person, del}) =>{
   return(
-    person.map(person => <div key={person.name}>{person.name} {person.number}</div>)
+    person.map(person => <div key={person.id}>{person.name} {person.number} 
+    <button onClick={()=>del(person.id, person.name)}>delete</button></div>)
   )
 }
 
