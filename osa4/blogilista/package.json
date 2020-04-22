@@ -4,12 +4,15 @@
   "description": "Fullstack Open 2020 osa 4",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose",
+    "lint": "eslint .",
     "dev": "nodemon index.js"
   },
   "author": "Antti Vornanen",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "jest": "^25.4.0",
     "nodemon": "^2.0.3"
   },
   "dependencies": {
