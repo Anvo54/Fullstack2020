@@ -15,11 +15,15 @@ const basicBlogs = [
     title: 'Hello again',
     author: 'You',
     url: 'http://www.com',
-    likes: 20
+    likes: ''
+  },
+  {
+    title: 'Hello again.. third time!',
+    author: 'You too',
+    url: 'http://www.org',
+    likes: '7'
   }
 ]
-
-
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -39,6 +43,37 @@ test('there are two blogs', async () => {
 test('identification field is id', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body.map(b => b.id)).toBeDefined()
+})
+
+test('Blog can be posted ', async () => {
+  const blogObject = new Blog(basicBlogs[2])
+
+  await api.post('/api/blogs')
+    .send(blogObject)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(3)
+})
+
+test('Likes is zero by default', async () => {
+  await Blog.deleteMany({})
+
+  let newBlogObj = {
+    title: 'Nikon DSLR blog',
+    author: 'Canon europe',
+    url: 'http://www.photograpyandbeyond.com',
+    likes: ''
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogObj)
+    .expect(200)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body.map(r => r.likes)).toContainEqual(0)
 })
 
 afterAll(() => {
