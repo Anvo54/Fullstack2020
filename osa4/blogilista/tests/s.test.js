@@ -76,6 +76,43 @@ test('Likes is zero by default', async () => {
   expect(response.body.map(r => r.likes)).toContainEqual(0)
 })
 
+test('400 Error if title or url missing', async () => {
+  await Blog.deleteMany({})
+
+  let newBlogObj = {
+    author: 'Piu',
+    likes: 2
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogObj)
+    .expect(400)
+})
+
+test('Can delete post', async () => {
+  await Blog.deleteMany({})
+
+  let newBlogObj = {
+    title: 'Delete me blog',
+    author: 'Destroyer',
+    url: 'http://www.deletemyblog.com',
+    likes: ''
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogObj)
+    .expect(200)
+
+  const response = await api.get('/api/blogs')
+  let id = response.body.map(b => b.id)
+
+  await api
+    .delete(`/api/blogs/${id}`)
+    .expect(204)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
