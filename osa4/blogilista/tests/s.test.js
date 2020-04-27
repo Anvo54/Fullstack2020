@@ -113,6 +113,39 @@ test('Can delete post', async () => {
     .expect(204)
 })
 
+test('Can modify post', async () => {
+  await Blog.deleteMany({})
+
+  let newBlogObj = {
+    title: 'Modify my blog',
+    author: 'Modifier',
+    url: 'http://www.modifymyblog.com',
+    likes: ''
+  }
+  let modBlogObj = {
+    title: 'Modify my blog',
+    author: 'Modifier',
+    url: 'http://www.modifymyblog.com',
+    likes: '200'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlogObj)
+    .expect(200)
+
+  let response = await api.get('/api/blogs')
+  let id = response.body.map(b => b.id)
+  expect(response.body.map(r => r.likes)).toContainEqual(0)
+
+  await api
+    .put(`/api/blogs/${id}`).send(modBlogObj)
+    .expect(204)
+
+  response = await api.get('/api/blogs')
+  expect(response.body.map(r => r.likes)).toContainEqual(200)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
