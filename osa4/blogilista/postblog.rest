@@ -1,10 +1,11 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbW9rIiwiaWQiOiI1ZWFiZDU1ZmFiMzQyZDY4NjgxNmY2NjkiLCJpYXQiOjE1ODgzMjQ5Nzh9.iXPMmreCRM_SU3Jm031-KGDipC0A-nQPMIGNKcueP98
 
 {
 	"title": "Lastadsfggdfst",
   "author": "hasddgfTi",
 	"url": "www.naytto.com",
-  "likes": 125,
-  "userId": ""
+  "likes": 1205,
+  "userId": "5eab237e532dec674c6388e9"
 }
