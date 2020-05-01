@@ -12,7 +12,6 @@ blogsRouter.post('/', async (request, response) => {
 
   const usId = await User.find({})
   const ids = usId.map(u => u.id)
-  console.log(ids[0])
   // const user = await User.findById(body.userId)
   const user = await User.findById(ids[0])
   let likes = (!body.likes) ? 0 : body.likes
