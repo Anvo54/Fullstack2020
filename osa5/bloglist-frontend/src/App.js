@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import Blog from './components/Blog'
+import Togglable from './components/Togglable'
+import CreateBlog from './components/CreateForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
@@ -115,45 +117,8 @@ const App = () => {
     </form>
   )
 
-  const createBlog = () => (
-     <form onSubmit={handleBlogAdd}>
-       {successMessage !== null && <div className="successMessage">{successMessage}</div>}
-       <div>
-         <h3>create new</h3>
-          title: 
-          <input
-              type="text"
-              onChange={({ target }) => setTitle(target.value)}
-              value={title}
-            />
-          <br></br>
-          author:
-            <input
-              type="text"
-              onChange={({ target }) => setAuthor(target.value)}
-              value={author}
-            />
-          <br></br>
-          url:
-            <input
-              type="text"
-              onChange={({ target }) => setUrl(target.value)}
-              value={url}
-            />
-            <br></br>
-          <button type="submit">create</button>
-       </div>
-       </form>
-  )
-
-  const blogContent = () => (
+ const blogContent = () => (
     <div>
-      <h2>blogs</h2>
-      <form onSubmit={handleLogout}>
-        <p>
-          {user.name} logged in <button type="submit">logout</button>
-        </p>
-      </form>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
@@ -168,7 +133,24 @@ const App = () => {
   } else 
   return (
     <div>
-      {createBlog()}
+    <h2>blogs</h2>
+    <form onSubmit={handleLogout}>
+        <p>
+          {user.name} logged in <button type="submit">logout</button>
+        </p>
+      </form>
+      <Togglable buttonLabel='New Blog'>
+        <CreateBlog
+          handleBlogAdd={handleBlogAdd}
+          handleTitleChange={({ target }) => setTitle(target.value)} 
+          handleAuthorChange={({ target }) => setAuthor(target.value)}
+          handleUrlChange={({ target }) => setUrl(target.value)}
+          successMessage={successMessage}
+          author={author}
+          title={title}
+          url={url}
+        />
+      </Togglable>
       {blogContent()}
     </div>
   )
