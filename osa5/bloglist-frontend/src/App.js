@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
-import CreateBlog from './components/CreateForm'
+import BlogForm from './components/CreateForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
-  const [author, setAuthor] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -58,20 +55,11 @@ const App = () => {
     }
   }
 
-  const handleBlogAdd = async (event) => {
-    event.preventDefault()
-    const newBlogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
+  const handleBlogAdd = async (blogObject) => {
     try {
-      const returnedBlog = await blogService.create(newBlogObject)
+      const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
-      setSuccessMessage(`a new blog ${newBlogObject.title} by ${newBlogObject.author} added`)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      setSuccessMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(()=> {
         setSuccessMessage(null)
       }, 5000)
@@ -139,16 +127,9 @@ const App = () => {
           {user.name} logged in <button type="submit">logout</button>
         </p>
       </form>
+      {successMessage !== null && <div className="successMessage">{successMessage}</div>}
       <Togglable buttonLabel='New Blog'>
-        <CreateBlog
-          handleBlogAdd={handleBlogAdd}
-          handleTitleChange={({ target }) => setTitle(target.value)} 
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleUrlChange={({ target }) => setUrl(target.value)}
-          successMessage={successMessage}
-          author={author}
-          title={title}
-          url={url}
+        <BlogForm createBlog={handleBlogAdd}
         />
       </Togglable>
       {blogContent()}
