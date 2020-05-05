@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/CreateForm'
@@ -14,10 +14,12 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
+  const blogFormRef = React.createRef()
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const App = () => {
     window.localStorage.clear()
   }
 
-  const handleLogin = async (event) =>{
+  const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
@@ -49,23 +51,24 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       setErrorMessage('wrong credentials')
-      setTimeout(()=> {
+      setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
   }
 
   const handleBlogAdd = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     try {
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog))
       setSuccessMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
-      setTimeout(()=> {
+      setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
     } catch (exception) {
       setErrorMessage(exception)
-      setTimeout(()=> {
+      setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
@@ -75,7 +78,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         <h3>Login</h3>
-          {errorMessage !== null && <div className="errorMessage">{errorMessage}</div>}
+        {errorMessage !== null && <div className="errorMessage">{errorMessage}</div>}
         <p>
           <strong>
             Username
@@ -86,55 +89,55 @@ const App = () => {
           value={username}
           name="Username"
           onChange={({ target }) => setUsername(target.value)}
-          />
+        />
       </div>
       <div>
-      <p>
-        <strong>
+        <p>
+          <strong>
           Password
-        </strong>
-      </p>
-      <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={({ target}) => setPassword(target.value)}
+          </strong>
+        </p>
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
         />
       </div>
       <button type="submit">login</button>
     </form>
   )
 
- const blogContent = () => (
+  const blogContent = () => (
     <div>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}
     </div>
   )
 
   if (user === null) {
     return (
-    <div>
-      {loginForm()}
-    </div>)
-  } else 
-  return (
-    <div>
-    <h2>blogs</h2>
-    <form onSubmit={handleLogout}>
-        <p>
-          {user.name} logged in <button type="submit">logout</button>
-        </p>
-      </form>
-      {successMessage !== null && <div className="successMessage">{successMessage}</div>}
-      <Togglable buttonLabel='New Blog'>
-        <BlogForm createBlog={handleBlogAdd}
-        />
-      </Togglable>
-      {blogContent()}
-    </div>
-  )
+      <div>
+        {loginForm()}
+      </div>)
+  } else
+    return (
+      <div>
+        <h2>blogs</h2>
+        <form onSubmit={handleLogout}>
+          <p>
+            {user.name} logged in <button type="submit">logout</button>
+          </p>
+        </form>
+        {successMessage !== null && <div className="successMessage">{successMessage}</div>}
+        <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+          <BlogForm createBlog={handleBlogAdd}
+          />
+        </Togglable>
+        {blogContent()}
+      </div>
+    )
 }
 
 export default App
