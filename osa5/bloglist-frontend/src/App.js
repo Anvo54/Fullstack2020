@@ -85,7 +85,10 @@ const App = () => {
     try {
       await blogService.update(blogObject.id, updatedBlog)
     } catch (exception) {
-      console.log(exception)
+      setErrorMessage(exception)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -95,11 +98,14 @@ const App = () => {
         await blogService.del(blog.id)
         setBlogs(blogs.filter(b => b.id !== blog.id))
         setSuccessMessage(`Blog ${blog.name} has been removed!`)
-        setTimeout(()=> {
+        setTimeout(() => {
           setSuccessMessage(null)
         },5000)
       } catch (exception) {
-        console.log(exception)
+        setErrorMessage(exception)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }
     }
   }

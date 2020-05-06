@@ -25,7 +25,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     setLikes(likes + 1)
   }
 
-  const handleDelete = () =>{
+  const handleDelete = () => {
     deleteBlog({ id: blog.id, name: blog.title })
   }
 
