@@ -74,6 +74,36 @@ const App = () => {
     }
   }
 
+  const handleBlogUpdate = async (blogObject) => {
+    const updatedBlog = {
+      user : blogObject.userid,
+      likes: blogObject.likes,
+      author: blogObject.author,
+      title: blogObject.title,
+      url: blogObject.url,
+    }
+    try {
+      await blogService.update(blogObject.id, updatedBlog)
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
+  const handleBlogDelete = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.name}`)){
+      try {
+        await blogService.del(blog.id)
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+        setSuccessMessage(`Blog ${blog.name} has been removed!`)
+        setTimeout(()=> {
+          setSuccessMessage(null)
+        },5000)
+      } catch (exception) {
+        console.log(exception)
+      }
+    }
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -110,8 +140,8 @@ const App = () => {
 
   const blogContent = () => (
     <div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} updateBlog={handleBlogUpdate} deleteBlog={handleBlogDelete}/>
       )}
     </div>
   )

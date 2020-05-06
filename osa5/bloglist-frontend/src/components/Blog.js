@@ -7,8 +7,27 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const [visible, setVisible] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
+
+  const handleLikes = () => {
+
+    updateBlog({
+      userid: blog.user.id,
+      likes: likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      name: blog.user.name,
+      id: blog.id
+    })
+    setLikes(likes + 1)
+  }
+
+  const handleDelete = () =>{
+    deleteBlog({ id: blog.id, name: blog.title })
+  }
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -23,9 +42,11 @@ const Blog = ({ blog }) => {
         <br></br>
         {blog.url}
         <br></br>
-        likes {blog.likes} <button>like</button>
+        likes {likes} <button onClick={() => handleLikes()}>like</button>
         <br></br>
         {blog.user.name}
+        <br></br>
+        <button onClick={() => handleDelete()}>delete</button>
       </div>
     </div>
   )
