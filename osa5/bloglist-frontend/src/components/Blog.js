@@ -7,7 +7,7 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -26,28 +26,32 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
 
   const handleDelete = () => {
-    deleteBlog({ id: blog.id, name: blog.title })
+    deleteBlog({ id: blog.id, name: blog.title})
+  }
+
+  const deleteButton = () =>{
+    if (user.name === blog.user.name) 
+      return (<button id="delete-button" onClick={() => handleDelete()}>delete</button>)
   }
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
-
+  
   return(
     <div style={blogStyle}>
       <div style={hideWhenVisible} className="blogContent">
-        {blog.title} {blog.author} <button onClick={() => setVisible(true)}>View</button>
+        {blog.title} {blog.author} <button id="View" onClick={() => setVisible(true)}>View</button>
       </div>
       <div style={showWhenVisible} className="togglableBlogContent">
         {blog.title} {blog.author} <button onClick={() => setVisible(false)}>Hide</button><br></br>
         <br></br>
         {blog.url}
         <br></br>
-        likes {likes} <button onClick={handleLikes}>like</button>
-        {/* likes {likes} <button onClick={() => handleLikes()}>like</button> */}
+        likes <span className="likes">{likes} </span><button onClick={handleLikes}>like</button>
         <br></br>
-        {blog.user.name}
+        {user.name}
         <br></br>
-        <button onClick={() => handleDelete()}>delete</button>
+        {deleteButton()}
       </div>
     </div>
   )

@@ -61,7 +61,7 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     try {
       const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(returnedBlog))
+      setBlogs(blogs.sort().concat(returnedBlog))
       setSuccessMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -121,6 +121,7 @@ const App = () => {
           </strong>
         </p>
         <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -134,20 +135,21 @@ const App = () => {
           </strong>
         </p>
         <input
+          id="password"
           type="password"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button id="login-button" type="submit">login</button>
     </form>
   )
 
   const blogContent = () => (
     <div>
       {blogs.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={handleBlogUpdate} deleteBlog={handleBlogDelete}/>
+        <Blog key={blog.id} blog={blog} updateBlog={handleBlogUpdate} deleteBlog={handleBlogDelete} user={user}/>
       )}
     </div>
   )
