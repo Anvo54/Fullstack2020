@@ -30,13 +30,40 @@ const App = () => {
 
   return (
     <div>
+      <h1>give feedback</h1>
       <button onClick={good}>good</button> 
       <button onClick={ok}>neutral</button> 
       <button onClick={bad}>bad</button>
       <button onClick={zero}>zero</button>
-      <div>good {store.getState().good}</div>
-      <div>neutral {store.getState().ok}</div>
-      <div>bad {store.getState().bad}</div>
+      <h2>statistics</h2>
+      <table>
+        <tbody>
+        <tr>
+          <td>good </td>
+          <td>{store.getState().good}</td>
+        </tr>
+        <tr>
+          <td>neutral </td>
+          <td>{store.getState().ok}</td>
+        </tr>
+        <tr>
+          <td>bad </td>
+          <td>{store.getState().bad}</td>
+        </tr>
+        <tr>
+          <td>all </td>
+          <td>{store.getState().all}</td>
+        </tr>
+        <tr>
+          <td>average </td>
+          <td>{store.getState().all !== 0 ? (store.getState().good +(store.getState().bad * -1)) + store.getState().ok / store.getState().all : ''}</td>
+        </tr>
+        <tr>
+          <td>positive </td>
+          <td>{store.getState().all !== 0 ? (store.getState().good / store.getState().all) * 100 : ''}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
