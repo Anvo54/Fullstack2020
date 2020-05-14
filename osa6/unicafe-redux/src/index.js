@@ -60,7 +60,7 @@ const App = () => {
         </tr>
         <tr>
           <td>positive </td>
-          <td>{store.getState().all !== 0 ? (store.getState().good / store.getState().all) * 100 : ''}</td>
+          <td>{store.getState().all !== 0 ? <div>{(store.getState().good / store.getState().all) * 100 } %</div>: ''}</td>
         </tr>
         </tbody>
       </table>
