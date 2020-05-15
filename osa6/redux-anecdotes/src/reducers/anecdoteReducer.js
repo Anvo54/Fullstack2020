@@ -58,5 +58,4 @@ const reducer = (state = initialState, action) => {
       return state
   }
   }
-//blogs.sort((a,b) => b.likes - a.likes).map(blog
 export default reducer
