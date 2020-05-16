@@ -9,14 +9,6 @@ export const addvote = id => {
     }) 
   }
 }
-// export const addvote = (id) => {
-//   return {
-//     type: 'vote',
-//     data: {
-//       id: id
-//     }
-//   }
-// }
 
 export const createAnecdote = content => {
   return async dispatch => {

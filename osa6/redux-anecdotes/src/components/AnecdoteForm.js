@@ -11,15 +11,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
-    dispatch(notificationChange({
-      type: 'ADD_ANECDOTE',
-      content
-    }))
-    setTimeout(()=> {
-      dispatch(notificationChange({
-        type: 'HIDE'
-      }))
-    },5000)
+    dispatch(notificationChange(`new anecdote ${content}`, 10))
   }
 
   return (
