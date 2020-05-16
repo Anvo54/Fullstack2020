@@ -1,43 +1,53 @@
-export const addvote = (id) => {
-  return {
+import anecdoteService from '../services/anecdotes'
+
+export const addvote = id => {
+  return async dispatch => {
+    const votetest = await anecdoteService.vote(id)
+    dispatch({
     type: 'vote',
-    data: {
-      id: id
-    }
+    data: votetest
+    }) 
+  }
+}
+// export const addvote = (id) => {
+//   return {
+//     type: 'vote',
+//     data: {
+//       id: id
+//     }
+//   }
+// }
+
+export const createAnecdote = content => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'new_anecdote',
+      data: newAnecdote
+    })
   }
 }
 
-export const createAnecdote = (data) => {
-  return {
-    type: 'new_anecdote',
-    data,
-  }
-}
-
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'init_anecdotes',
-    data: anecdotes
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'init_anecdotes',
+      data: anecdotes
+    })
   }
 }
 
 const reducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
-
   switch(action.type) {
     case 'new_anecdote':
       return [...state, action.data]
     case 'init_anecdotes':
       return action.data
     case 'vote':
-      const id = action.data.id
-      const anecdoteToVote = state.find(a => a.id === id)
-      const votedAnecdote = {
-        ...anecdoteToVote,
-        votes: anecdoteToVote.votes + 1
-      }
-      return state.sort((a,b) => b.votes - a.votes).map(anecdote => anecdote.id !== id ? anecdote : votedAnecdote)
+      return state.sort((a,b) => b.votes - a.votes).map(anecdote => anecdote.id !== action.data.id ? anecdote : action.data)
     default:
       return state
   }
