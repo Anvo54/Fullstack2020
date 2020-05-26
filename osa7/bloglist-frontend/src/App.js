@@ -63,26 +63,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const handleBlogUpdate = async (blogObject) => {
-    const updatedBlog = {
-      user : blogObject.userid,
-      likes: blogObject.likes,
-      author: blogObject.author,
-      title: blogObject.title,
-      url: blogObject.url,
-    }
-    try {
-      await blogService.update(blogObject.id, updatedBlog)
-    } catch (exception) {
-      let message = {
-        action: 'SET_MESSAGE',
-        message_type: 'ERROR',
-        message: exception
-      }
-      dispatch(setMessage(message,5))
-    }
-  }
-
   const handleBlogDelete = async (blog) => {
     if (window.confirm(`Remove blog ${blog.name}`)){
       try {
@@ -144,7 +124,7 @@ const App = () => {
   const blogContent = () => (
     <div>
       {blogit.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={handleBlogUpdate} deleteBlog={handleBlogDelete} user={user}/>
+        <Blog key={blog.id} blog={blog} deleteBlog={handleBlogDelete} user={user}/>
       )}
     </div>
   )

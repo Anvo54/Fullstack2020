@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { likeBlog, deleteBlog } from '../reducers/blogreducer'
+import { useDispatch } from 'react-redux'
+import { setMessage } from '../reducers/messageReducer'
 
 const blogStyle = {
   paddingTop: 10,
@@ -7,26 +10,28 @@ const blogStyle = {
   borderWidth: 1,
   marginBottom: 5
 }
-const Blog = ({ blog, updateBlog, deleteBlog, user }) => {
+
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
+  let likes = blog.likes
+
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const handleLikes = () => {
-
-    updateBlog({
-      userid: blog.user.id,
-      likes: likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url,
-      name: blog.user.name,
-      id: blog.id
-    })
-    setLikes(likes + 1)
+    let updatedLikes = likes + 1
+    const updatedBlog = {...blog, likes: updatedLikes}
+    dispatch(likeBlog(updatedBlog))
   }
 
   const handleDelete = () => {
-    deleteBlog({ id: blog.id, name: blog.title})
+    let nameOfDeleted = blog.title
+    dispatch(deleteBlog(blog.id))
+    let message = {
+      action: 'SET_MESSAGE',
+      message_type: 'SUCCESS',
+      message: `Blog ${nameOfDeleted} has been removed!`
+    }
+    dispatch(setMessage(message, 5))
   }
 
   const deleteButton = () =>{

@@ -1,7 +1,10 @@
-POST http://localhost:3001/api/login
-Content-Type: application/json
+# GET http://localhost:3000/api/blogs/5eccdab670f0f850e0b59ac2
 
-{
-	"username": "timok",
-	"password": "Pirtu9000"
-}
+GET http://localhost:3000/api/blogs/5eccdab670f0f850e0b59ac2
+# POST http://localhost:3001/api/login
+# Content-Type: application/json
+
+# {
+# 	"username": "timok",
+# 	"password": "Pirtu9000"
+# }

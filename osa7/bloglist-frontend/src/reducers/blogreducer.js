@@ -11,10 +11,8 @@ export const initBlogs = () => {
 }
 
 export const newBlog = (content) => {
-  console.log('Content: ',content)
   return async dispatch => {
     const blogItem = await blogService.create(content)
-    console.log('BlogItem: ',blogItem)
     dispatch({
       type: 'NEW_BLOG',
       data: blogItem
@@ -22,15 +20,52 @@ export const newBlog = (content) => {
   }
 }
 
+export const likeBlog = (updatedBlog) => {
+  const {id, username, user, ...ub} = updatedBlog
+  const updated = {
+    user: user,
+    likes: ub.likes,
+    author: ub.author,
+    title: ub.title,
+    url: ub.url,
+  }
+  return async dispatch => {
+    await blogService.update(id, updated)
+    dispatch({
+      type: 'LIKE',
+      data: updatedBlog,
+    })
+  }
+}
+
+export const deleteBlog = (id) => {
+  return async dispatch => {
+    await blogService.del(id)
+    dispatch({
+      type: 'DELETE',
+      data: id
+    })
+  }
+}
+
 const blogReducer = (state = [], action) => {
-  console.log('data ',action.data)
-  console.log('state ',state)
   switch (action.type){
     case 'INIT_BLOGS':
-      state = action.data
-      return state
+      return action.data
     case 'NEW_BLOG':
       return [...state, action.data]
+    case 'DELETE':
+      return state.filter(blog => blog.id !== action.data)
+    case 'LIKE':
+      const updated = {
+        author: action.data.author,
+        id: action.data.id,
+        likes: action.data.likes,
+        title: action.data.title,
+        url: action.data.url,
+        user: action.data.user
+      }
+      return state.map(blogs => blogs.id !== updated.id ? blogs : updated)
     default:
       return state
   }
