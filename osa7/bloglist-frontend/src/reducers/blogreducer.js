@@ -1,6 +1,5 @@
 import blogService from '../services/blogs'
 
-//Hae alkuperäinen state axionilla DB:stä
 export const initBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
@@ -12,8 +11,10 @@ export const initBlogs = () => {
 }
 
 export const newBlog = (content) => {
+  console.log('Content: ',content)
   return async dispatch => {
-    const blogItem = await blogService.newBlog(content)
+    const blogItem = await blogService.create(content)
+    console.log('BlogItem: ',blogItem)
     dispatch({
       type: 'NEW_BLOG',
       data: blogItem
@@ -22,10 +23,12 @@ export const newBlog = (content) => {
 }
 
 const blogReducer = (state = [], action) => {
-  console.log('Daatta ',action.data)
+  console.log('data ',action.data)
+  console.log('state ',state)
   switch (action.type){
     case 'INIT_BLOGS':
-      return action.data
+      state = action.data
+      return state
     case 'NEW_BLOG':
       return [...state, action.data]
     default:

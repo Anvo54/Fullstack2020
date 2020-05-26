@@ -59,25 +59,8 @@ const App = () => {
     }
   }
 
-  const handleBlogAdd = async (blogObject) => {
+  const handleBlogAdd = () => {
     blogFormRef.current.toggleVisibility()
-    const message = {
-      action: 'SET_MESSAGE',
-      message_type: 'SUCCESS',
-      message: `a new blog ${blogObject.title} by ${blogObject.author} added`
-    }
-    try {
-      const returnedBlog = await blogService.create(blogObject)
-      setBlogs(blogs.sort().concat(returnedBlog))
-      dispatch(setMessage(message, 5))
-    } catch (exception) {
-      let message = {
-        action: 'SET_MESSAGE',
-        message_type: 'ERROR',
-        message: exception
-      }
-      dispatch(setMessage(message,5))
-    }
   }
 
   const handleBlogUpdate = async (blogObject) => {
