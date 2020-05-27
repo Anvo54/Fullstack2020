@@ -12,8 +12,7 @@ import './App.css'
 const App = () => {
   const dispatch = useDispatch()
   const messages = useSelector(state => state.message)
-  const blogit = useSelector(state => state.blog)
-  const [blogs, setBlogs] = useState([])
+  const blog = useSelector(state => state.blog)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -63,28 +62,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const handleBlogDelete = async (blog) => {
-    if (window.confirm(`Remove blog ${blog.name}`)){
-      try {
-        let message = {
-          action: 'SET_MESSAGE',
-          message_type: 'SUCCESS',
-          message: `Blog ${blog.name} has been removed!`
-        }
-        await blogService.del(blog.id)
-        setBlogs(blogs.filter(b => b.id !== blog.id))
-        dispatch(setMessage(message, 5))
-      } catch (exception) {
-        let message = {
-          action: 'SET_MESSAGE',
-          message_type: 'ERROR',
-          message: exception
-        }
-        dispatch(setMessage(message,5))
-      }
-    }
-  }
-
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -123,8 +100,8 @@ const App = () => {
 
   const blogContent = () => (
     <div>
-      {blogit.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} deleteBlog={handleBlogDelete} user={user}/>
+      {blog.sort((a,b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} user={user}/>
       )}
     </div>
   )

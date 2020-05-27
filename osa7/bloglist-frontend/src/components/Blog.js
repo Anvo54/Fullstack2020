@@ -35,7 +35,7 @@ const Blog = ({ blog, user }) => {
   }
 
   const deleteButton = () =>{
-    if (user.name === blog.user.name) 
+    if (user.id === blog.user.id || user.name === blog.user.name) 
       return (<button id="delete-button" onClick={() => handleDelete()}>delete</button>)
   }
 
@@ -54,7 +54,7 @@ const Blog = ({ blog, user }) => {
         <br></br>
         likes <span className="likes">{likes} </span><button onClick={handleLikes}>like</button>
         <br></br>
-        {user.name}
+        {blog.user.name}
         <br></br>
         {deleteButton()}
       </div>
