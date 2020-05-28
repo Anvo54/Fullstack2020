@@ -3,10 +3,10 @@ import { newBlog } from '../reducers/blogreducer'
 import { useDispatch } from 'react-redux'
 import { setMessage } from '../reducers/messageReducer'
 
+
 const BlogForm = ({ createBlog }) => {
   const dispatch = useDispatch()
-
-  
+ 
   const addBlog = (event) => {
     event.preventDefault()
 
@@ -24,6 +24,10 @@ const BlogForm = ({ createBlog }) => {
     createBlog(newBlogObject)
     dispatch(newBlog(newBlogObject))
     dispatch(setMessage(message, 5))
+
+    event.target.author.value = ''
+    event.target.title.value = ''
+    event.target.url.value = ''
   }
 
   return (

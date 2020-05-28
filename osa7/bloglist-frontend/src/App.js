@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/CreateForm'
-import blogService from './services/blogs'
 import { initBlogs } from './reducers/blogreducer'
-import loginService from './services/login'
-import { setMessage } from './reducers/messageReducer'
+import { presistantLogin } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import LoginForm from './components/LoginForm'
 import './App.css'
 
 const App = () => {
   const dispatch = useDispatch()
   const messages = useSelector(state => state.message)
   const blog = useSelector(state => state.blog)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector(state => state.user)
   const blogFormRef = React.createRef()
 
   useEffect(() => {
@@ -26,77 +23,17 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
+      dispatch(presistantLogin(user))
     }
-  }, [])
+  }, [dispatch])
 
   const handleLogout = async () => {
     window.localStorage.clear()
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password
-      })
-      window.localStorage.setItem(
-        'loggedBlogAppUser', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      let message = {
-        action: 'SET_MESSAGE',
-        message_type: 'ERROR',
-        message: 'invalid username or password'
-      }
-      dispatch(setMessage(message,5))
-    }
-  }
-
   const handleBlogAdd = () => {
     blogFormRef.current.toggleVisibility()
   }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        <h3>Login</h3>
-        {messages.message !== '' && messages.message_type === 'ERROR' && <div className="errorMessage">{messages.message}</div>}
-        <p>
-          <strong>
-            Username
-          </strong>
-        </p>
-        <input
-          id="username"
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        <p>
-          <strong>
-          Password
-          </strong>
-        </p>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">login</button>
-    </form>
-  )
 
   const blogContent = () => (
     <div>
@@ -109,7 +46,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        {loginForm()}
+        <LoginForm />
       </div>)
   } else
     return (

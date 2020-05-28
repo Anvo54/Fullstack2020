@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { likeBlog, deleteBlog } from '../reducers/blogreducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setMessage } from '../reducers/messageReducer'
 
 const blogStyle = {
@@ -11,7 +11,8 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   let likes = blog.likes
 
