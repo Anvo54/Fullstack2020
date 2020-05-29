@@ -2,7 +2,6 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { setMessage } from '../reducers/messageReducer'
 
-
 export const loginUser = (credentials) => {
   return async dispatch => {
     try {

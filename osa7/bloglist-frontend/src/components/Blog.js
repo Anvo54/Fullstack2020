@@ -12,8 +12,8 @@ const blogStyle = {
 }
 
 const Blog = ({ blog }) => {
-  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
   let likes = blog.likes
 
   const [visible, setVisible] = useState(false)
