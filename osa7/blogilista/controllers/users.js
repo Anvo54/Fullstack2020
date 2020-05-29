@@ -26,8 +26,7 @@ usersRouter.get('/', async (request, response) => {
 })
 
 usersRouter.get('/:id', async (request, response) => {
-  console.log(request.params.id)
-  const user = await User.findById(request.params.id)
+  const user = await User.findById(request.params.id).find({}).populate('blogs')
   response.json(user)
 })
 

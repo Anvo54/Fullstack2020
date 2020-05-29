@@ -8,7 +8,7 @@ import { initUsers } from './reducers/allUsersReducer'
 import { presistantLogin } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import LoginForm from './components/LoginForm'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link, useParams} from 'react-router-dom'
 import './App.css'
 
 const App = () => {
@@ -43,6 +43,23 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
+  const User = ({allUsers}) => {
+    const id = useParams().id
+    const user = allUsers.find(u => u.id === id)
+    if (!user) {
+      return null
+    }
+    return (
+      <div>
+        <h2>{user.name}</h2>
+        <h3>added blogs</h3>
+        <ul>
+          {user.blogs.map(b => <li key={b.id}>{b.title}</li>)}
+        </ul>
+      </div>
+    )
+  }
+
   const BlogContent = () => {
     return (
       <div>
@@ -75,8 +92,11 @@ const App = () => {
           {messages.message !== '' && messages.message_type === 'SUCCESS' && <div className="successMessage">{messages.message}</div>}
           {messages.message !== '' && messages.message_type === 'ERROR' && <div className="errorMessage">{messages.message}</div>}
           <Switch>
+            <Route path='/users/:id'>
+              <User allUsers={allUsers} />
+            </Route>
             <Route path='/users'>
-              <Users allUsers={allUsers} />
+              <Users allUsers={allUsers} Link={Link}/>
             </Route>
             <Route path='/'>
               <BlogContent/>

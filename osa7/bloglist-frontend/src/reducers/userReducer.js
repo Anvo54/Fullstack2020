@@ -36,6 +36,7 @@ export const presistantLogin = user => {
     }
 }
 
+
 const userReducer = (state = null, action) => {
   console.log('action ',action)
   console.log('state ', state)
