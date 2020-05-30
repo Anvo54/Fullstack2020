@@ -2,5 +2,5 @@ POST http://localhost:3001/api/blogs/5eabddbff865ec6ce0c64878/comments
 Content-Type: application/json
 
 {
-	"comment": "Very Good BLOGGGI"
+	"comment": "Uusi Blogg"
 }
