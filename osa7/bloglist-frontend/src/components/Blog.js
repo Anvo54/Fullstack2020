@@ -1,7 +1,4 @@
-import React, { useState } from 'react'
-import { likeBlog, deleteBlog } from '../reducers/blogreducer'
-import { useDispatch, useSelector } from 'react-redux'
-import { setMessage } from '../reducers/messageReducer'
+import React from 'react'
 
 const blogStyle = {
   paddingTop: 10,
@@ -12,52 +9,10 @@ const blogStyle = {
 }
 
 const Blog = ({ blog, Link }) => {
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
-  let likes = blog.likes
-
-  const [visible, setVisible] = useState(false)
-
-  const handleLikes = () => {
-    let updatedLikes = likes + 1
-    const updatedBlog = {...blog, likes: updatedLikes}
-    dispatch(likeBlog(updatedBlog))
-  }
-
-  const handleDelete = () => {
-    let nameOfDeleted = blog.title
-    dispatch(deleteBlog(blog.id))
-    let message = {
-      action: 'SET_MESSAGE',
-      message_type: 'SUCCESS',
-      message: `Blog ${nameOfDeleted} has been removed!`
-    }
-    dispatch(setMessage(message, 5))
-  }
-
-  const deleteButton = () =>{
-    if (user.id === blog.user.id || user.name === blog.user.name) 
-      return (<button id="delete-button" onClick={() => handleDelete()}>delete</button>)
-  }
-
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
-  
   return(
     <div style={blogStyle}>
-      <div style={hideWhenVisible} className="blogContent">
-        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button id="View" onClick={() => setVisible(true)}>View</button>
-      </div>
-      <div style={showWhenVisible} className="togglableBlogContent">
-        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button onClick={() => setVisible(false)}>Hide</button><br></br>
-        <br></br>
-        {blog.url}
-        <br></br>
-        likes <span className="likes">{likes} </span><button onClick={handleLikes}>like</button>
-        <br></br>
-        {blog.user.name}
-        <br></br>
-        {deleteButton()}
+      <div className="blogContent">
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
       </div>
     </div>
   )
