@@ -11,7 +11,7 @@ const blogStyle = {
   marginBottom: 5
 }
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, Link }) => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   let likes = blog.likes
@@ -46,10 +46,10 @@ const Blog = ({ blog }) => {
   return(
     <div style={blogStyle}>
       <div style={hideWhenVisible} className="blogContent">
-        {blog.title} {blog.author} <button id="View" onClick={() => setVisible(true)}>View</button>
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button id="View" onClick={() => setVisible(true)}>View</button>
       </div>
       <div style={showWhenVisible} className="togglableBlogContent">
-        {blog.title} {blog.author} <button onClick={() => setVisible(false)}>Hide</button><br></br>
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button onClick={() => setVisible(false)}>Hide</button><br></br>
         <br></br>
         {blog.url}
         <br></br>

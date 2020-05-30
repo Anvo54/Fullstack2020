@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import Togglable from './components/Togglable'
 import BlogForm from './components/CreateForm'
 import Users from './components/Users'
+import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 import { initBlogs } from './reducers/blogreducer'
 import { initUsers } from './reducers/allUsersReducer'
 import { presistantLogin } from './reducers/userReducer'
@@ -43,23 +45,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const User = ({allUsers}) => {
-    const id = useParams().id
-    const user = allUsers.find(u => u.id === id)
-    if (!user) {
-      return null
-    }
-    return (
-      <div>
-        <h2>{user.name}</h2>
-        <h3>added blogs</h3>
-        <ul>
-          {user.blogs.map(b => <li key={b.id}>{b.title}</li>)}
-        </ul>
-      </div>
-    )
-  }
-
   const BlogContent = () => {
     return (
       <div>
@@ -68,7 +53,7 @@ const App = () => {
         />
       </Togglable>
       {blog.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} user={user}/>
+        <Blog key={blog.id} blog={blog} user={user} Link={Link}/>
       )}
       </div>
     )
@@ -93,10 +78,13 @@ const App = () => {
           {messages.message !== '' && messages.message_type === 'ERROR' && <div className="errorMessage">{messages.message}</div>}
           <Switch>
             <Route path='/users/:id'>
-              <User allUsers={allUsers} />
+              <User allUsers={allUsers} useParams={useParams} />
+            </Route>
+            <Route path='/blogs/:id'>
+              <SingleBlog useParams={useParams} blog={blog}/>
             </Route>
             <Route path='/users'>
-              <Users allUsers={allUsers} Link={Link}/>
+              <Users allUsers={allUsers} Link={Link} />
             </Route>
             <Route path='/'>
               <BlogContent/>
