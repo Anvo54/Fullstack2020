@@ -58,3 +58,12 @@
   font-weight: bolder;
   font-family: monospace;
 }
+
+.navMenu {
+  background-color: rgb(172, 172, 172);
+  padding: 5;
+font-family: monospace;}
+
+.inLine {
+  display: inline-block;
+}

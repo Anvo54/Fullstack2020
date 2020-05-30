@@ -21,6 +21,10 @@ const App = () => {
   const allUsers = useSelector(state => state.allUsers)
   const blogFormRef = React.createRef()
 
+  const padding = {
+    padding: 5
+  }
+
   useEffect(() => {
     dispatch(initBlogs())
   }, [dispatch])
@@ -68,12 +72,15 @@ const App = () => {
     return (
       <Router>
         <div>
-          <h2>blogs</h2>
-          <form onSubmit={handleLogout}>
-            <p>
-              {user.name} logged in <button type="submit">logout</button>
-            </p>
-          </form>
+          <div className='navMenu'>
+            <Link style={padding} to={'/'}>home</Link>
+            <Link style={padding} to={'/users'}>users</Link>
+            <form className='inLine' onSubmit={handleLogout}>
+              {user.name} logged in <button type="submit">logout</button>  
+            </form>
+          </div>
+          <h2>blog app</h2>
+
           {messages.message !== '' && messages.message_type === 'SUCCESS' && <div className="successMessage">{messages.message}</div>}
           {messages.message !== '' && messages.message_type === 'ERROR' && <div className="errorMessage">{messages.message}</div>}
           <Switch>

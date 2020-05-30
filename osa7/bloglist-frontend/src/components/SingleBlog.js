@@ -19,7 +19,7 @@ const SingleBlog = ({blog, useParams}) => {
   return (
     <div>
       <h1>{sBlog.title}</h1>
-      <a href={`http://${sBlog.url}`}>{sBlog.url}</a><br></br>
+      <a href={`${sBlog.url}`}>{sBlog.url}</a><br></br>
       <div>{sBlog.likes} likes<button onClick={() => handleLikes()}>like</button></div>
       <div>added by {sBlog.author}</div>
     </div>
