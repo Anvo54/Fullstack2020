@@ -1,10 +1,11 @@
-const config = require('./utils/config') // Täällä määritellään ympäristö muuttujat
-const express = require('express') // Tässä otetaan käyttöön express
+const config = require('./utils/config')
+const express = require('express')
 const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
+const commentsRouter = require('./controllers/comments')
 const middleWare = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -26,6 +27,7 @@ app.use(express.json())
 app.use(middleWare.requestLogger)
 
 app.use('/api/blogs/', blogsRouter)
+app.use('/api/blogs/', commentsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
