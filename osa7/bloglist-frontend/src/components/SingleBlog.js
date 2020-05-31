@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import { likeBlog } from '../reducers/blogreducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { initComments, postComment } from '../reducers/commentsReducer'
+import { Button, Form, ListGroup} from 'react-bootstrap'
 
 const SingleBlog = ({blog, useParams}) => {
   const comments = useSelector(state => state.comments)
@@ -38,16 +39,22 @@ const SingleBlog = ({blog, useParams}) => {
     <div>
       <h1>{sBlog.title}</h1>
       <a href={`${sBlog.url}`}>{sBlog.url}</a><br></br>
-      <div>{sBlog.likes} likes<button onClick={() => handleLikes()}>like</button></div>
+      <div>{sBlog.likes} likes<Button size='sm' onClick={() => handleLikes()}>like</Button></div>
       <div>added by {sBlog.author}</div>
       <br></br>
       <h3>comments</h3>
-      <form onSubmit={addComment}>
-        <input name='newComment'></input>
-        <button type='submit'>Add comment</button>
-      </form>
+      <Form onSubmit={addComment}>
+        <Form.Group>
+          <Form.Control name='newComment'/>
+          <br></br>
+          <Button type='submit'>Add comment</Button>
+        </Form.Group>
+      </Form>
       <br></br>
-      {blogsComments.map(c => <li key={c.id}>{c.comment}</li>)}
+  {blogsComments.map(c =>
+    <ListGroup key={c.id}>
+      <ListGroup.Item>{c.comment}</ListGroup.Item>
+    </ListGroup>)}
     </div>
   )
 }

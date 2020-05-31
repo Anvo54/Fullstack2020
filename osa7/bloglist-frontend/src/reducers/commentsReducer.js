@@ -13,7 +13,6 @@ export const initComments = () => {
 export const postComment = (content) => {
   return async dispatch => {
     const comment = await commentService.postComment(content)
-    console.log(comment)
     dispatch({
       type: 'NEW_COMMENT',
       data: comment

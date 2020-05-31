@@ -1,10 +1,14 @@
 import React from 'react'
+import { Table } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
-const Users = ({allUsers, Link}) => {
+
+const Users = ({Link}) => {
+  const allUsers = useSelector(state => state.allUsers)
   return (
     <div>
       <h2>Blogs</h2>
-        <table>
+      <Table striped>
           <thead>
             <tr>
               <td>
@@ -21,7 +25,7 @@ const Users = ({allUsers, Link}) => {
                 <td>{u.blogs.length}</td>
               </tr>)}
           </tbody>
-        </table>
+      </Table>
     </div>
     )
 }

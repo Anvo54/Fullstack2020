@@ -5,17 +5,18 @@ import BlogForm from './components/CreateForm'
 import Users from './components/Users'
 import User from './components/User'
 import SingleBlog from './components/SingleBlog'
+import Messages from './components/Messages'
 import { initBlogs } from './reducers/blogreducer'
 import { initUsers } from './reducers/allUsersReducer'
 import { presistantLogin } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import LoginForm from './components/LoginForm'
+import { Nav, Navbar, Button, Form } from 'react-bootstrap'
 import { BrowserRouter as Router, Switch, Route, Link, useParams} from 'react-router-dom'
 import './App.css'
 
 const App = () => {
   const dispatch = useDispatch()
-  const messages = useSelector(state => state.message)
   const blog = useSelector(state => state.blog)
   const user = useSelector(state => state.user)
   const allUsers = useSelector(state => state.allUsers)
@@ -42,21 +43,17 @@ const App = () => {
     }
   }, [dispatch])
 
-  const handleLogout = async () => {
+  const handleLogout = async => {
     window.localStorage.clear()
   }
-
-  const handleBlogAdd = () => {
-    blogFormRef.current.toggleVisibility()
-  }
-
+  
   const BlogContent = () => {
     return (
       <div>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-        <BlogForm createBlog={handleBlogAdd}
-        />
+        <BlogForm hideAfter={()=> blogFormRef.current.toggleVisibility()}/>
       </Togglable>
+      <br></br>
         {blog.sort((a,b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} user={user} Link={Link}/>
       )}
@@ -66,24 +63,34 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className='container'>
         <LoginForm />
       </div>)
   } else
     return (
-      <Router>
-        <div>
-          <div className='navMenu'>
-            <Link style={padding} to={'/'}>home</Link>
-            <Link style={padding} to={'/users'}>users</Link>
-            <form className='inLine' onSubmit={handleLogout}>
-              {user.name} logged in <button type="submit">logout</button>  
-            </form>
-          </div>
-          <h2>blog app</h2>
+      <div className='container'>
+        <Router>
+          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+            <Navbar.Collapse id='responsive-navbar-nav'>
+              <Nav className='mr-auto'>
+                <Nav.Link href='#' as='span'>
+                  <Link style={padding} to={'/'}>home</Link>
+                </Nav.Link>
+                <Nav.Link href='#' as='span'>
+                  <Link style={padding} to={'/users'}>users</Link>
+                </Nav.Link>
+                <Nav.Link href='#' as='span'>
+                  <Form onSubmit={handleLogout}>
+                    {user.name} logged in <Button variant='light' type="submit" size='sm'>logout</Button>  
+                  </Form>
+                </Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
 
-          {messages.message !== '' && messages.message_type === 'SUCCESS' && <div className="successMessage">{messages.message}</div>}
-          {messages.message !== '' && messages.message_type === 'ERROR' && <div className="errorMessage">{messages.message}</div>}
+          <h2>blog app</h2>
+          <Messages/>
           <Switch>
             <Route path='/users/:id'>
               <User allUsers={allUsers} useParams={useParams} />
@@ -92,14 +99,14 @@ const App = () => {
               <SingleBlog useParams={useParams} blog={blog}/>
             </Route>
             <Route path='/users'>
-              <Users allUsers={allUsers} Link={Link} />
+              <Users Link={Link} />
             </Route>
             <Route path='/'>
               <BlogContent/>
             </Route>
           </Switch>
+        </Router>
         </div>
-      </Router>
     )
 }
 

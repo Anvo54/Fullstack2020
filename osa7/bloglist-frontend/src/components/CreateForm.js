@@ -2,11 +2,13 @@ import React from 'react'
 import { newBlog } from '../reducers/blogreducer'
 import { useDispatch } from 'react-redux'
 import { setMessage } from '../reducers/messageReducer'
+import { Form, Button } from 'react-bootstrap'
 
 
-const BlogForm = ({ createBlog }) => {
+
+const BlogForm = ({ hideAfter }) => {
   const dispatch = useDispatch()
- 
+  
   const addBlog = (event) => {
     event.preventDefault()
 
@@ -21,7 +23,7 @@ const BlogForm = ({ createBlog }) => {
       title: event.target.title.value,
       url: event.target.url.value
     })
-    createBlog(newBlogObject)
+    hideAfter()
     dispatch(newBlog(newBlogObject))
     dispatch(setMessage(message, 5))
 
@@ -31,24 +33,24 @@ const BlogForm = ({ createBlog }) => {
   }
 
   return (
-    <form onSubmit={addBlog}>
+    <Form onSubmit={addBlog}>
       <div>
         <h3>create new</h3>
-        title:
-        <input
-          name='title'/>
-        <br></br>
-        author:
-        <input
-          name='author'/>
-        <br></br>
-        url:
-        <input
-          name='url'/>
-        <br></br>
-        <button id='submit-button' type="submit">create</button>
+        <Form.Group>
+          <Form.Label>title:</Form.Label>
+          <Form.Control
+            name='title'/>
+          <Form.Label>author:</Form.Label>
+          <Form.Control
+            name='author'/>
+          <Form.Label>url:</Form.Label>
+          <Form.Control
+            name='url'/>
+            <br></br>
+          <Button variant='primary' id='submit-button' type="submit">create</Button>
+        </Form.Group>
       </div>
-    </form>
+    </Form>
   )
 
 }
