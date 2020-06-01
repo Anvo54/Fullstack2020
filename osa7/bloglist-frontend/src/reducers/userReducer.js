@@ -6,7 +6,7 @@ export const loginUser = (credentials) => {
   return async dispatch => {
     try {
       const user = await loginService.login({
-        username: credentials.username, 
+        username: credentials.username,
         password: credentials.password
       })
       window.localStorage.setItem(
@@ -29,22 +29,22 @@ export const loginUser = (credentials) => {
 }
 
 export const presistantLogin = user => {
-    blogService.setToken(user.token)
-    return {
-      type: 'LOGGEDIN',
-      data: user
-    }
+  blogService.setToken(user.token)
+  return {
+    type: 'LOGGEDIN',
+    data: user
+  }
 }
 
 
 const userReducer = (state = null, action) => {
   switch (action.type) {
-    case 'LOGIN':
-      return action.data
-    case 'LOGGEDIN':
-      return action.data
-    default:
-      return state
+  case 'LOGIN':
+    return action.data
+  case 'LOGGEDIN':
+    return action.data
+  default:
+    return state
   }
 }
 

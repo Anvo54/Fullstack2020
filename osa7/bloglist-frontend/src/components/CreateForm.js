@@ -8,7 +8,7 @@ import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = ({ hideAfter }) => {
   const dispatch = useDispatch()
-  
+
   const addBlog = (event) => {
     event.preventDefault()
 
@@ -17,7 +17,7 @@ const BlogForm = ({ hideAfter }) => {
       message_type: 'SUCCESS',
       message: `a new blog ${event.target.title.value} by ${event.target.author.value} added`
     }
-    
+
     const newBlogObject = ({
       author: event.target.author.value,
       title: event.target.title.value,
@@ -46,13 +46,12 @@ const BlogForm = ({ hideAfter }) => {
           <Form.Label>url:</Form.Label>
           <Form.Control
             name='url'/>
-            <br></br>
+          <br></br>
           <Button variant='primary' id='submit-button' type="submit">create</Button>
         </Form.Group>
       </div>
     </Form>
   )
-
 }
 
 export default BlogForm

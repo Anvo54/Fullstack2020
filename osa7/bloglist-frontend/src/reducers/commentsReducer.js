@@ -20,14 +20,14 @@ export const postComment = (content) => {
   }
 }
 
-const commentReducer = (state = [], action) =>{
+const commentReducer = (state = [], action) => {
   switch (action.type) {
-    case 'GET_COMMENTS':
-      return action.data
-    case 'NEW_COMMENT':
-      return [...state, action.data]
-    default:
-      return state
+  case 'GET_COMMENTS':
+    return action.data
+  case 'NEW_COMMENT':
+    return [...state, action.data]
+  default:
+    return state
   }
 }
 

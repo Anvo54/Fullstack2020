@@ -1,6 +1,6 @@
 import React from 'react'
 
-const User = ({allUsers, useParams}) => {
+const User = ({ allUsers, useParams }) => {
   const id = useParams().id
   const user = allUsers.find(u => u.id === id)
   if (!user) {

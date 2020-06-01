@@ -1,17 +1,17 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { likeBlog } from '../reducers/blogreducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { initComments, postComment } from '../reducers/commentsReducer'
-import { Button, Form, ListGroup} from 'react-bootstrap'
+import { Button, Form, ListGroup } from 'react-bootstrap'
 
-const SingleBlog = ({blog, useParams}) => {
+const SingleBlog = ({ blog, useParams }) => {
   const comments = useSelector(state => state.comments)
   const dispatch = useDispatch()
   const id = useParams().id
   const sBlog = blog.find(b => b.id === id)
   const blogsComments = comments.filter(c => c.blog === id)
-  
-  const addComment =(event)=> {
+
+  const addComment =(event) => {
     event.preventDefault()
     const commentObject = {
       comment: event.target.newComment.value,
@@ -20,7 +20,7 @@ const SingleBlog = ({blog, useParams}) => {
     dispatch(postComment(commentObject))
     event.target.newComment.value = ''
   }
-  
+
   useEffect(() => {
     dispatch(initComments(id))
   }, [dispatch, id])
@@ -31,7 +31,7 @@ const SingleBlog = ({blog, useParams}) => {
   let likes = sBlog.likes
   const handleLikes = () => {
     let updatedLikes = likes + 1
-    const updatedBlog = {...sBlog, likes: updatedLikes}
+    const updatedBlog = { ...sBlog, likes: updatedLikes }
     dispatch(likeBlog(updatedBlog))
   }
 
@@ -51,10 +51,10 @@ const SingleBlog = ({blog, useParams}) => {
         </Form.Group>
       </Form>
       <br></br>
-  {blogsComments.map(c =>
-    <ListGroup key={c.id}>
-      <ListGroup.Item>{c.comment}</ListGroup.Item>
-    </ListGroup>)}
+      {blogsComments.map(c =>
+        <ListGroup key={c.id}>
+          <ListGroup.Item>{c.comment}</ListGroup.Item>
+        </ListGroup>)}
     </div>
   )
 }

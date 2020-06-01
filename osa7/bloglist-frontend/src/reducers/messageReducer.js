@@ -17,20 +17,20 @@ export const setMessage = (data, millisec) => {
       type: 'SET_MESSAGE',
       message_type: null,
       message: ''
-    }), millisec * 1000);
+    }), millisec * 1000)
   }
 }
 
 const messageReducer = (state = initState, action) => {
   switch (action.type) {
-    case 'SET_MESSAGE':
-      state = {
-        message: action.message,
-        message_type: action.message_type
-      }
-      return state
-    default:
-      return state
+  case 'SET_MESSAGE':
+    state = {
+      message: action.message,
+      message_type: action.message_type
+    }
+    return state
+  default:
+    return state
   }
 }
 

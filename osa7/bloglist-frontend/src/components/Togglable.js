@@ -1,5 +1,4 @@
 import React, { useState, useImperativeHandle } from 'react'
-import PropTypes from 'prop-types'
 import { Button } from 'react-bootstrap'
 
 const Togglable = React.forwardRef((props, ref) => {
@@ -27,9 +26,6 @@ const Togglable = React.forwardRef((props, ref) => {
   )
 })
 
-Togglable.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
-}
 
 Togglable.displayName = 'Togglable'
 

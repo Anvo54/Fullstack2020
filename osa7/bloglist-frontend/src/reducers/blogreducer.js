@@ -21,7 +21,7 @@ export const newBlog = (content) => {
 }
 
 export const likeBlog = (updatedBlog) => {
-  const {id, username, user, ...ub} = updatedBlog
+  const { id, user, ...ub } = updatedBlog
   const updated = {
     user: user,
     likes: ub.likes,
@@ -50,24 +50,24 @@ export const deleteBlog = (id) => {
 
 const blogReducer = (state = [], action) => {
   switch (action.type){
-    case 'INIT_BLOGS':
-      return action.data
-    case 'NEW_BLOG':
-      return [...state, action.data]
-    case 'DELETE':
-      return state.filter(blog => blog.id !== action.data)
-    case 'LIKE':
-      const updated = {
-        author: action.data.author,
-        id: action.data.id,
-        likes: action.data.likes,
-        title: action.data.title,
-        url: action.data.url,
-        user: action.data.user
-      }
-      return state.map(blogs => blogs.id !== updated.id ? blogs : updated)
-    default:
-      return state
+  case 'INIT_BLOGS':
+    return action.data
+  case 'NEW_BLOG':
+    return [...state, action.data]
+  case 'DELETE':
+    return state.filter(blog => blog.id !== action.data)
+  case 'LIKE':{
+    const updated = {
+      author: action.data.author,
+      id: action.data.id,
+      likes: action.data.likes,
+      title: action.data.title,
+      url: action.data.url,
+      user: action.data.user
+    }
+    return state.map(blogs => blogs.id !== updated.id ? blogs : updated)}
+  default:
+    return state
   }
 }
 

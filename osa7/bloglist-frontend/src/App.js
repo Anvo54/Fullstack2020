@@ -12,7 +12,7 @@ import { presistantLogin } from './reducers/userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import LoginForm from './components/LoginForm'
 import { Nav, Navbar, Button, Form } from 'react-bootstrap'
-import { BrowserRouter as Router, Switch, Route, Link, useParams} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link, useParams } from 'react-router-dom'
 import './App.css'
 
 const App = () => {
@@ -43,20 +43,20 @@ const App = () => {
     }
   }, [dispatch])
 
-  const handleLogout = async => {
+  const handleLogout = async () => {
     window.localStorage.clear()
   }
-  
+
   const BlogContent = () => {
     return (
       <div>
-      <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-        <BlogForm hideAfter={()=> blogFormRef.current.toggleVisibility()}/>
-      </Togglable>
-      <br></br>
+        <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+          <BlogForm hideAfter={ () => blogFormRef.current.toggleVisibility() }/>
+        </Togglable>
+        <br></br>
         {blog.sort((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} Link={Link}/>
-      )}
+          <Blog key={blog.id} blog={blog} user={user} Link={Link}/>
+        )}
       </div>
     )
   }
@@ -82,7 +82,7 @@ const App = () => {
                 </Nav.Link>
                 <Nav.Link href='#' as='span'>
                   <Form onSubmit={handleLogout}>
-                    {user.name} logged in <Button variant='light' type="submit" size='sm'>logout</Button>  
+                    {user.name} logged in <Button variant='light' type="submit" size='sm'>logout</Button>
                   </Form>
                 </Nav.Link>
               </Nav>
@@ -106,7 +106,7 @@ const App = () => {
             </Route>
           </Switch>
         </Router>
-        </div>
+      </div>
     )
 }
 
